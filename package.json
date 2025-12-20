@@ -1,22 +1,40 @@
 {
   "name": "le-grinch",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
+  "main": "electron.js",
+  "homepage": "./",
   "dependencies": {
     "@testing-library/dom": "^10.4.1",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.1",
     "@testing-library/user-event": "^13.5.0",
+    "cors": "^2.8.5",
+    "express": "^5.2.1",
+    "lucide-react": "^0.562.0",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
     "react-scripts": "5.0.1",
+    "socket.io": "^4.8.1",
+    "socket.io-client": "^4.8.1",
     "web-vitals": "^2.1.4"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2",
+    "electron": "^28.1.0",
+    "electron-builder": "^24.9.1",
+    "wait-on": "^7.2.0"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "electron": "electron .",
+    "electron-dev": "concurrently \"set BROWSER=none && npm start\" \"wait-on http://localhost:3000 && electron .\"",
+    "electron-pack": "npm run build && electron-builder build --win --mac -c.extraMetadata.main=electron.js",
+    "electron-pack-win": "npm run build && electron-builder build --win -c.extraMetadata.main=electron.js",
+    "electron-pack-mac": "npm run build && electron-builder build --mac -c.extraMetadata.main=electron.js"
   },
   "eslintConfig": {
     "extends": [
@@ -35,5 +53,31 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "build": {
+    "appId": "com.legrinch.app",
+    "productName": "Le Grinch - Jeu du Tricheur",
+    "files": [
+      "build/**/*",
+      "electron.js",
+      "server.js",
+      "node_modules/**/*"
+    ],
+    "directories": {
+      "buildResources": "assets"
+    },
+    "win": {
+      "target": ["nsis"],
+      "icon": "build/icon.png"
+    },
+    "mac": {
+      "target": ["dmg"],
+      "icon": "build/icon.png",
+      "category": "public.app-category.games"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    }
   }
 }
