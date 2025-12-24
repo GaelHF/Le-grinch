@@ -55,29 +55,31 @@
     ]
   },
   "build": {
-    "appId": "com.legrinch.app",
+    "appId": "ca.gaelhf.grinch",
     "productName": "Le Grinch - Jeu du Tricheur",
+    "icon": "assets/icon",
     "files": [
       "build/**/*",
       "electron.js",
       "server.js",
-      "node_modules/**/*"
+      "node_modules/**/*",
+      "!node_modules/fsevents"
     ],
     "directories": {
       "buildResources": "assets"
     },
     "win": {
-      "target": ["nsis"],
-      "icon": "build/icon.png"
+      "target": ["nsis"]
     },
     "mac": {
       "target": ["dmg"],
-      "icon": "build/icon.png",
       "category": "public.app-category.games"
     },
     "nsis": {
       "oneClick": false,
       "allowToChangeInstallationDirectory": true
     }
-  }
+  },
+  "description": "Jeu du Tricheur - Un joueur voit la réponse secrètement",
+  "author": "GaelHF"
 }

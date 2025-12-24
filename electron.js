@@ -13,7 +13,8 @@ function createWindow() {
       nodeIntegration: false,
       contextIsolation: true
     },
-    icon: path.join(__dirname, 'build', 'icon.png')
+    frame: false,
+    icon: path.join(__dirname, 'assets/icon.png')
   });
 
   // En développement, charge depuis localhost

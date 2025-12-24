@@ -51,6 +51,25 @@ io.on('connection', (socket) => {
     console.log(`${playerName} a rejoint la partie ${code}`);
   });
 
+  socket.on('leaveGame', ({ code, playerName }) => {
+    const game = games[code];
+    if (!game) return;
+
+    game.players = game.players.filter(p => p.name !== playerName);
+    socket.leave(code);
+
+    // Si l’admin quitte → fermer la partie
+    if (socket.id === game.adminSocket) {
+      io.to(code).emit('gameClosed');
+      delete games[code];
+      console.log(`Partie ${code} fermée (admin parti)`);
+      return;
+    }
+
+    io.to(code).emit('playersUpdate', game.players);
+    console.log(`${playerName} a quitté la partie ${code}`);
+  });
+
   socket.on('startGame', ({ code }) => {
     io.to(code).emit('gameStarted');
     console.log('Partie démarrée:', code);

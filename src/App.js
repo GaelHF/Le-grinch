@@ -46,6 +46,7 @@ export default function JeuTricheur() {
       socket.off('playersUpdate');
       socket.off('gameStarted');
       socket.off('questionUpdate');
+      socket.off("gameClosed");
     };
   }, []);
 
@@ -76,6 +77,23 @@ export default function JeuTricheur() {
       }
     });
   };
+
+  const leaveGame = () => {
+    socket.emit('leaveGame', { code: currentGame, playerName });
+    setScreen('home');
+    setGameCode('');
+    setPlayerName('');
+    setIsAdmin(false);
+    setCurrentGame(null);
+    setPlayers([]);
+  };
+
+  socket.on('gameClosed', () => {
+    alert('La partie a été fermée par l’hôte');
+    setScreen('home');
+    setCurrentGame(null);
+    setPlayers([]);
+  });
 
   const startGame = () => {
     socket.emit('startGame', { code: currentGame });
@@ -209,6 +227,13 @@ export default function JeuTricheur() {
             {!isAdmin && (
               <p className="text-center text-gray-600">En attente du démarrage...</p>
             )}
+            <br></br>
+            <button
+              onClick={leaveGame}
+              className="w-full mt-4 py-3 rounded-xl font-semibold btn-danger"
+            >
+              Quitter la partie
+            </button>
           </div>
         </div>
       </div>
